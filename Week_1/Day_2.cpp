@@ -1,183 +1,53 @@
-//Leetcode problem 102: Binary Tree Level Order Traversal
+// Leetcode problems MAXIMUM SUBARRAY, CONTAINS DUPLICATE, MAXIMUM AVERAGE SUBARRAY I
 
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
-    vector<vector<int>> levelOrder(TreeNode* root) {
-        vector<vector<int>>ans;
-        queue<TreeNode*>q;
-        if(root==NULL)
-            return {};
-        q.push(root);
-        while(!q.empty())
+    int maxSubArray(vector<int>& nums) {
+        int sum=0,maxsum=INT_MIN;
+        int n=nums.size();
+        for(int i=0;i<n;i++)
         {
-            int level_size=q.size();
-            vector<int>temp;
-            while(level_size--)
-            {
-                TreeNode* t=q.front();
-                q.pop();
-                temp.push_back(t->val);
-                if(t->left!=NULL)
-                    q.push(t->left);
-                if(t->right!=NULL)
-                    q.push(t->right);
-            }
-            ans.push_back(temp);
+            sum+=nums[i];
+            maxsum=max(maxsum,sum);
+            if(sum<0)
+                sum=0;
         }
-        return ans;
+        return maxsum;
     }
 };
 
-//Leetcode problem 103: Binary Tree Zigzag Level Order Traversal
 
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
-    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
-        vector<vector<int>>ans;
-        if(root==NULL)
-            return {};
-        queue<TreeNode*>q;
-        q.push(root);
-        bool left_to_right=1;
-        while(!q.empty())
+    bool containsDuplicate(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        for(int i=1;i<nums.size();i++)
         {
-            int level_size=q.size();
-            vector<int>temp;
-            while(level_size--)
-            {
-                TreeNode* t=q.front();
-                q.pop();
-                temp.push_back(t->val);
-                if(t->left!=NULL)
-                    q.push(t->left);
-                if(t->right!=NULL)
-                    q.push(t->right);
-            }
-            if(left_to_right==1)
-            {
-                ans.push_back(temp);
-                left_to_right=0;
-            }
-            else if(left_to_right==0)
-            {
-                reverse(temp.begin(), temp.end());
-                ans.push_back(temp);
-                left_to_right=1;
-            }
+            if(nums[i]==nums[i-1])
+                return true;
         }
-        return ans;
+        return false;
     }
 };
 
-// Method-2
 
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
-    vector<vector<int>> zigzagLevelOrder(TreeNode* root) 
-    {
-        vector<vector<int>>ans;
-        if(root==NULL)
-            return {};
-        queue<TreeNode*>q;
-        q.push(root);
-        bool left_to_right=1;
-        while(!q.empty())
+    double findMaxAverage(vector<int>& nums, int k) {
+        int sum=0,max_sum=INT_MIN;
+        int length=nums.size();
+        for(int i=0;i<k;i++)
         {
-            int level_size=q.size();
-            vector<int>temp(level_size);
-            int first=0;
-            int last=level_size-1;
-            while(level_size--)
-            {
-                TreeNode* t=q.front();
-                q.pop();
-                if(left_to_right)
-                    temp[first++]=t->val;
-                else
-                    temp[last--]=t->val;
-                if(t->left!=NULL)
-                    q.push(t->left);
-                if(t->right!=NULL)
-                    q.push(t->right);
-            }
-            ans.push_back(temp);
-            left_to_right=1-left_to_right;
+            sum+=nums[i];
         }
+        max_sum=sum;
+        for(int i=k;i<length;i++)
+        {
+            sum+=nums[i];
+            sum-=nums[i-k];
+            max_sum=max(max_sum,sum);
+        }
+        double ans=(double)max_sum/k;
         return ans;
-    }
-};
-
-//Leetcode problem 107: Binary Tree Level Order Traversal from Bottom
-
-**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
-class Solution {
-public:
-    vector<vector<int>> levelOrderBottom(TreeNode* root) {
-        vector<vector<int>>ans;
-        queue<TreeNode*>q;
-        if(root==NULL)
-            return {};
-        q.push(root);
-        while(!q.empty())
-        {
-            int level_size=q.size();
-            vector<int> temp;
-            while(level_size--)
-            {
-                TreeNode* t=q.front();
-                q.pop();
-                temp.push_back(t->val);
-                if(t->left!=NULL)
-                    q.push(t->left);
-                if(t->right!=NULL)
-                    q.push(t->right);
-            }
-            ans.push_back(temp);
-        }
-        reverse(ans.begin(),ans.end());
-        return ans; 
     }
 };

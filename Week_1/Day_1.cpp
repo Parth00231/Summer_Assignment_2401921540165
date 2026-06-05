@@ -1,89 +1,68 @@
-//Leetcode problem 94: Binary Tree Inorder Traversal
+//Leetcode problems TWO SUM, REMOVE DUPLICATES FROM SORTED ARRAY, BEST TIME TO BUY AND SELL STOCK
 
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
+
+
 class Solution {
 public:
-    vector<int>output; 
-    vector<int> inorderTraversal(TreeNode* root) {
-        func(root);
-        return output;
-    }
-    void func(TreeNode* root)
+    vector<int> twoSum(vector<int>& nums, int target) 
     {
-        if(root==NULL)
-            return;
-        func(root->left);
-        output.push_back(root->val);
-        func(root->right);
+        vector<pair<int,int>> arr;
+        int i;
+        for(i=0; i<nums.size();i++)
+            arr.push_back({nums[i], i});
+        sort(arr.begin(),arr.end());
+        int k=nums.size();
+        int j=k-1;
+        i=0;
+        while(i<j)
+        {
+            int sum = arr[i].first + arr[j].first;
+            if(sum==target)
+                return{arr[i].second,arr[j].second};
+            else if(sum>target)
+                j--;
+            else
+                i++;
+        }
+        return{};
     }
 };
 
-//Leetcode problem 144: Binary Tree Preorder Traversal
 
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
-    vector<int>output; 
-    vector<int> preorderTraversal(TreeNode* root) {
-        func(root);
-        return output;
-    }
-    void func(TreeNode* root)
-    {
-        if(root==NULL)
-            return;
-        output.push_back(root->val);
-        func(root->left);
-        func(root->right);
+    int removeDuplicates(vector<int>& nums) {
+        int k=nums.size();
+        if(k == 0) 
+            return 0;
+
+        vector<int> arr;
+        arr.push_back(nums[0]);
+
+    for(int i = 1; i < k; i++) {
+        if(nums[i] != nums[i-1])
+            arr.push_back(nums[i]);
+    }   
+
+    for(int i = 0; i < arr.size(); i++)
+    nums[i] = arr[i];
+
+    return arr.size();
+
     }
 };
 
-//Leetcode problem 145: Binary Tree Postorder Traversal
 
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
-    vector<int>output; 
-    vector<int> postorderTraversal(TreeNode* root) {
-        func(root);
-        return output;
-    }
-    void func(TreeNode* root)
-    {
-        if(root==NULL)
-            return;
-        func(root->left);
-        func(root->right);
-        output.push_back(root->val);
+    int maxProfit(vector<int>& prices) {
+        int minprofit=INT_MAX;
+        int maxprofit=0;
+        for(int x:prices)
+        {
+            minprofit=min(minprofit,x);
+            maxprofit=max(maxprofit,x-minprofit);
+        }
+        return maxprofit;
     }
 };
